@@ -1,0 +1,67 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "command": "make",
+            "problemMatcher": [],
+            "detail": "build project"
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "group": "build",
+            "command": "make clean",
+            "problemMatcher": [],
+            "detail": "Clean project"
+        },
+        {
+            "type": "shell",
+            "label": "Flash",
+            "command": "st-flash",
+            "args": [
+                "--reset",
+                "write",
+                "${input:workspaceFolderForwardSlash}/build/${workspaceFolderBasename}.bin",
+                "0x08000000"
+            ],
+            "dependsOn": [
+                "Build"
+            ],
+            "problemMatcher": [],
+            "group": "build",
+            "detail": "Builds project and flashes firmware"
+        },
+        {
+            "type": "shell",
+            "label": "Erase",
+            "command": "st-flash",
+            "args": [
+                "--connect-under-reset",
+                "erase"
+            ],
+            "detail": "Mass erase of chip",
+            "problemMatcher": [
+                "$armcc5"
+            ]
+        }
+    ],
+    "inputs": [
+        {
+          "id": "workspaceFolderForwardSlash",
+          "type": "command",
+          "command": "extension.commandvariable.transform",
+          "args": {
+            "text": "${workspaceFolder}",
+            "find": "\\\\",
+            "replace": "/",
+            "flags": "g"
+          }
+        }
+    ]
+}
